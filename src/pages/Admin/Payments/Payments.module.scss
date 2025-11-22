@@ -1,0 +1,116 @@
+.payments-page {
+  h1 {
+    margin-bottom: 2rem;
+    color: #333;
+  }
+}
+
+.table-container {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  
+  thead {
+    background: #f5f5f5;
+    
+    th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: #333;
+      border-bottom: 2px solid #e0e0e0;
+    }
+  }
+  
+  tbody {
+    tr {
+      border-bottom: 1px solid #e0e0e0;
+      transition: background 0.2s;
+      
+      &:hover {
+        background: #f9f9f9;
+      }
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    
+    td {
+      padding: 1rem;
+      color: #666;
+    }
+  }
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  
+  &.completed {
+    background: #d1fae5;
+    color: #065f46;
+  }
+  
+  &.failed {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+  
+  &.refunded {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  
+  &.pending {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+}
+
+.update-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  background: #e3f2fd;
+  color: #0066cc;
+  transition: all 0.2s;
+  
+  &:hover {
+    background: #bbdefb;
+  }
+}
+
+.status-form {
+  padding: 1.5rem;
+  max-width: 500px;
+  
+  h2 {
+    margin: 0 0 1.5rem 0;
+    color: #333;
+  }
+  
+  p {
+    margin: 0.5rem 0;
+    color: #666;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+  }
+}
+

@@ -1,0 +1,119 @@
+.admin-layout {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.admin-container {
+  display: flex;
+  min-height: calc(100vh - 80px);
+}
+
+.pro-sidebar {
+  position: sticky !important;
+  top: 80px;
+  height: calc(100vh - 80px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  
+  :global(.pro-sidebar-inner) {
+    background: white !important;
+    border-right: 1px solid #e0e0e0;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+  }
+  
+  :global(.pro-sidebar-content) {
+    background: white !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-y: auto !important;
+  }
+  
+  :global(.pro-menu) {
+    padding: 0.5rem 0;
+    background: white !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  :global(.pro-menu-item) {
+    margin: 0.25rem 0.5rem;
+    border-radius: 8px;
+    transition: all 0.2s;
+    
+    &:hover {
+      background: #f5f5f5 !important;
+    }
+    
+    &.pro-menu-item-active {
+      background: #e3f2fd !important;
+      color: #0066cc !important;
+      font-weight: 600;
+      
+      :global(.pro-icon-wrapper) {
+        color: #0066cc !important;
+      }
+    }
+  }
+  
+  :global(.pro-icon-wrapper) {
+    margin-right: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+  
+  h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    color: #333;
+  }
+}
+
+.admin-user {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.collapse-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: #666;
+  
+  &:hover {
+    background: #e0e0e0;
+    color: #333;
+  }
+  
+  svg {
+    display: block;
+  }
+}
+
+.admin-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  transition: margin-left 0.3s;
+}
+

@@ -1,0 +1,41 @@
+.flight-search-page {
+  display: grid;
+  grid-template-columns: 8fr 4fr;
+  gap: 40px;
+  .flight-searchbar {
+    margin: 0;
+    margin-top: 40px;
+    padding: 0;
+    box-shadow: var(--elevation-ultra-light);
+  }
+}
+.flight-table-title {
+  padding-left: 8px;
+  margin-top: 16px;
+  color: var(--grey-600);
+  span {
+    color: var(--purple-blue);
+  }
+}
+.left-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.right-container {
+  padding-top: 198px;
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .flight-search-page {
+    grid-template-columns: 1fr;
+  }
+  .right-container {
+    padding-top: 0;
+  }
+}
