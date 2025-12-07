@@ -273,7 +273,7 @@ const MyBookings = () => {
                       {reservation.passengerFirstName} {reservation.passengerLastName}
                     </p>
                     <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.25rem' }}>
-                      Class: {reservation.flightClass} | Total: {reservation.totalPrice.toFixed(2)} MAD
+                      Class: {reservation.flightClass} | Total: {parseFloat(String(reservation.totalPrice)).toFixed(2)} MAD
                     </p>
                   </div>
                   <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>

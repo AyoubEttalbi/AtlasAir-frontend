@@ -8,13 +8,20 @@ interface TextFieldProps extends HTMLProps<HTMLInputElement> {
   disabled?: boolean;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
+  label?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const TextField: FC<TextFieldProps> = (props) => {
-  const { error, helperText, startIcon, endIcon, ...other } = props;
+  const { error, helperText, startIcon, endIcon, label, ...other } = props;
   return (
     <div className={clsx("input-container", error && "error", props.className)}>
-      <div>
+      {label && (
+        <label className="input-label">
+          {label}
+          {props.required && <span className="required-mark">*</span>}
+        </label>
+      )}
+      <div className="input-wrapper">
         {startIcon && <span className="start-icon">{startIcon}</span>}
         <input type="text" {...other} />
         {endIcon && <span className="end-icon">{endIcon}</span>}

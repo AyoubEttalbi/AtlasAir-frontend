@@ -158,14 +158,13 @@ const AdminAirports = () => {
                   <td>{airport.country}</td>
                   <td>
                     {airport.latitude && airport.longitude
-                      ? `${airport.latitude.toFixed(4)}, ${airport.longitude.toFixed(4)}`
+                      ? `${parseFloat(String(airport.latitude)).toFixed(4)}, ${parseFloat(String(airport.longitude)).toFixed(4)}`
                       : '-'}
                   </td>
                   <td>
                     <span
-                      className={`${styles['status-badge']} ${
-                        airport.isActive ? styles['active'] : styles['inactive']
-                      }`}
+                      className={`${styles['status-badge']} ${airport.isActive ? styles['active'] : styles['inactive']
+                        }`}
                     >
                       {airport.isActive ? 'Active' : 'Inactive'}
                     </span>
@@ -195,69 +194,69 @@ const AdminAirports = () => {
         <Modal opened={showModal} setOpened={setShowModal}>
           <div className={styles['airport-form']}>
             <h2>{editingAirport ? 'Edit Airport' : 'Create Airport'}</h2>
-            
+
             <div className={styles['form-section']}>
               <h3>Basic Information</h3>
               <div className={styles['form-grid']}>
-              <TextField
-                label="Name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                required
-              />
-              <TextField
-                label="Code"
-                value={formData.code}
-                onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
-                required
-                maxLength={10}
-              />
-              <TextField
-                label="City"
-                value={formData.city}
-                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                required
-              />
-              <TextField
-                label="Country"
-                value={formData.country}
-                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                required
-              />
-              <TextField
-                label="Latitude"
-                type="number"
-                step="any"
-                value={formData.latitude}
-                onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
-                placeholder="e.g., 40.7128"
-              />
-              <TextField
-                label="Longitude"
-                type="number"
-                step="any"
-                value={formData.longitude}
-                onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
-                placeholder="e.g., -74.0060"
-              />
+                <TextField
+                  label="Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                />
+                <TextField
+                  label="Code"
+                  value={formData.code}
+                  onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
+                  required
+                  maxLength={10}
+                />
+                <TextField
+                  label="City"
+                  value={formData.city}
+                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                  required
+                />
+                <TextField
+                  label="Country"
+                  value={formData.country}
+                  onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                  required
+                />
+                <TextField
+                  label="Latitude"
+                  type="number"
+                  step="any"
+                  value={formData.latitude}
+                  onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
+                  placeholder="e.g., 40.7128"
+                />
+                <TextField
+                  label="Longitude"
+                  type="number"
+                  step="any"
+                  value={formData.longitude}
+                  onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
+                  placeholder="e.g., -74.0060"
+                />
               </div>
             </div>
 
             <div className={styles['form-section']}>
               <h3>Status</h3>
               <div className={styles['form-grid']}>
-              <div>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={formData.isActive}
-                    onChange={(e) =>
-                      setFormData({ ...formData, isActive: e.target.checked })
-                    }
-                  />
-                  Active Airport
-                </label>
-              </div>
+                <div>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={formData.isActive}
+                      onChange={(e) =>
+                        setFormData({ ...formData, isActive: e.target.checked })
+                      }
+                    />
+                    Active Airport
+                  </label>
+                </div>
               </div>
             </div>
             <div className={styles['form-actions']}>

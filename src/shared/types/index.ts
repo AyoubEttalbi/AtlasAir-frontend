@@ -66,4 +66,5 @@ interface BookedFlights {
     arriving: string[];
   };
   reservationIds?: string[];
+  selectedClass?: string;
 }

@@ -2,13 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookedFlights } from "@shared/types";
 import { paymentsService, ticketsService, api } from "@services";
-import { CreatePaymentRequest, PaymentStatus } from "@services/types/api.types";
+import { CreatePaymentRequest } from "@services/types/api.types";
 import { ApiError } from "@services/types/api.types";
 import Button from "@shared/ui/Button";
 import { TextField } from "@shared/ui/Input";
 import { SelectedFlights } from "@features/flights/SelectedFlights/SelectedFlights";
 import { Header } from "@shared/layout/Header/Header";
-import styles from "./style.module.scss";
 import CreditCardIcon from "@shared/icons/32/credit card.svg?react";
 import { useAuth } from "@context/AuthContext";
 import generateTicketPdf from "@/util/generateTicketPdf";
@@ -47,7 +46,9 @@ const FlightsPaymentPage = () => {
 
     try {
       const booking = JSON.parse(bookingStr);
-      if (!booking.reservationIds || booking.reservationIds.length === 0) {
+      // We need flights and passengers to proceed
+      if (!booking.flights || booking.flights.length === 0 ||
+        !booking.passengers || booking.passengers.length === 0) {
         navigate("/flights");
         return;
       }
@@ -68,14 +69,19 @@ const FlightsPaymentPage = () => {
   };
 
   const handlePayment = async () => {
-    if (!bookedFlights?.reservationIds || bookedFlights.reservationIds.length === 0) {
-      setError("No reservations found. Please start over.");
-      return;
-    }
-
     // Validate payment form
     if (!paymentData.cardNumber || !paymentData.cardHolder || !paymentData.expiryDate || !paymentData.cvv) {
       setError("Please fill in all payment details");
+      return;
+    }
+
+    if (!bookedFlights?.flights || bookedFlights.flights.length === 0) {
+      setError("No flights selected. Please start over.");
+      return;
+    }
+
+    if (!bookedFlights?.passengers || bookedFlights.passengers.length === 0) {
+      setError("No passenger information. Please start over.");
       return;
     }
 
@@ -83,10 +89,68 @@ const FlightsPaymentPage = () => {
       setIsProcessing(true);
       setError(null);
 
-      // Fetch all reservations to get their actual totalPrice values
       const { reservationsService } = await import("@services");
+      const { FlightClass } = await import("@services/types/api.types");
+
+      // Helper to format date of birth
+      const formatDateOfBirth = (dob: string): string => {
+        if (!dob) return '';
+        if (dob.includes('/')) {
+          const parts = dob.split('/');
+          if (parts.length === 3) {
+            const month = parts[0].padStart(2, '0');
+            const day = parts[1].padStart(2, '0');
+            let year = parts[2];
+            if (year.length === 2) {
+              const yearNum = parseInt(year);
+              year = yearNum > 50 ? `19${year}` : `20${year}`;
+            }
+            return `${year}-${month}-${day}`;
+          }
+        }
+        return new Date(dob).toISOString().split('T')[0];
+      };
+
+      // Map seat class
+      const mapSeatClass = (seatClass: string): typeof FlightClass[keyof typeof FlightClass] => {
+        switch (seatClass) {
+          case "Business":
+            return FlightClass.BUSINESS;
+          case "First":
+            return FlightClass.FIRST;
+          default:
+            return FlightClass.ECONOMY;
+        }
+      };
+
+      const seatClass = mapSeatClass(bookedFlights.selectedClass || "Economy");
+      const reservationIds: string[] = [];
+
+      // Step 1: Create reservations for each passenger for each flight
+      console.log("Creating reservations...");
+      for (const flight of bookedFlights.flights) {
+        for (let i = 0; i < bookedFlights.passengers.length; i++) {
+          const passenger = bookedFlights.passengers[i];
+
+          const reservationData = {
+            flightId: flight.id,
+            passengerFirstName: passenger.firstName,
+            passengerLastName: passenger.lastName,
+            passengerPassport: passenger.passport || `PASS${Date.now()}${i}`,
+            passengerDateOfBirth: formatDateOfBirth(passenger.dob),
+            flightClass: seatClass,
+          };
+
+          console.log("Creating reservation:", reservationData);
+          const reservation = await reservationsService.create(reservationData);
+          reservationIds.push(reservation.id);
+        }
+      }
+      console.log("Created reservations:", reservationIds);
+
+      // Step 2: Fetch all reservations to get their totalPrice values
       const reservations = await Promise.all(
-        bookedFlights.reservationIds.map(id => reservationsService.getById(id))
+        reservationIds.map(id => reservationsService.getById(id))
       );
 
       console.log('Fetched reservations:', reservations.map(r => ({
@@ -95,28 +159,22 @@ const FlightsPaymentPage = () => {
         flightId: r.flight?.id,
       })));
 
-      // Calculate total from actual reservation prices
-      const total = reservations.reduce((sum, reservation) => sum + reservation.totalPrice, 0);
-      console.log('Total payment amount:', total);
-
-      // Create payment for each reservation using its actual totalPrice
+      // Step 3: Create payment for each reservation
       const paymentPromises = reservations.map((reservation) => {
         const paymentRequest: CreatePaymentRequest = {
           reservationId: reservation.id,
-          amount: reservation.totalPrice, // Use reservation's actual totalPrice
+          amount: parseFloat(String(reservation.totalPrice)),
           currency: "MAD",
           paymentMethod: paymentData.paymentMethod,
-          cardNumber: paymentData.cardNumber.replace(/\s/g, ''), // Remove spaces
+          cardNumber: paymentData.cardNumber.replace(/\s/g, ''),
           cardHolder: paymentData.cardHolder,
-          expiryDate: paymentData.expiryDate, // MM/YY format
+          expiryDate: paymentData.expiryDate,
           cvv: paymentData.cvv,
         };
         console.log('Creating payment request:', {
           reservationId: paymentRequest.reservationId,
           amount: paymentRequest.amount,
           cardNumber: paymentRequest.cardNumber.substring(0, 4) + '****',
-          cardHolder: paymentRequest.cardHolder,
-          expiryDate: paymentRequest.expiryDate,
         });
         return paymentsService.create(paymentRequest);
       });
@@ -126,7 +184,7 @@ const FlightsPaymentPage = () => {
       // After payments succeed, try to fetch tickets for reservations
       try {
         const fetched = await Promise.all(
-          bookedFlights.reservationIds.map((id) =>
+          reservationIds.map((id) =>
             ticketsService.getByReservation(id).catch(() => null)
           )
         );
@@ -141,6 +199,7 @@ const FlightsPaymentPage = () => {
 
       // Clear booking data
       localStorage.removeItem("bookedFlights");
+      sessionStorage.removeItem("bookedFlights");
     } catch (err) {
       const apiError = err as ApiError;
       console.error('Payment error details:', {

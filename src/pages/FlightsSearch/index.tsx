@@ -3,24 +3,14 @@ import { FlightTable } from "@features/flights/FlightTable/FlightTable";
 import { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import { FlightFilter } from "@features/flights/FlightFilter/FlightFilter";
-import { PriceGrid } from "@features/flights/PriceGrid/PriceGrid";
 import { SelectedFlights } from "@features/flights/SelectedFlights/SelectedFlights";
 import { Flight, FlightSearchValues } from "@shared/types";
 import Button from "@shared/ui/Button";
-import { PriceHistory } from "@features/flights/PriceHistory/PriceHistory";
-import { PriceRating } from "@features/flights/PriceRating/PriceRating";
-import { CardRow } from "@shared/ui/CardRow/CardRow";
-import { RowTitle } from "@shared/ui/RowTitle/RowTitle";
-import {
-  flightDeals1,
-  hotelDeals1,
-} from "@shared/data";
 import { useParamsData } from "@hooks/useParamsData";
 import { useNavigate } from "react-router-dom";
 import { flightsService } from "@services";
 import { useAirports } from "@hooks/useAirports";
-import { SearchFlightRequest } from "@services/types/api.types";
-import { ApiError } from "@services/types/api.types";
+import { SearchFlightRequest, ApiError } from "@services/types/api.types";
 const sortData = (
   data: Flight[],
   sortBy?: "price" | "stops" | "times" | "airlines" | null
@@ -48,7 +38,7 @@ export const FlightsSearch = () => {
   }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const { data: searchValues } = useParamsData<FlightSearchValues | null>(null);
   const { getAirportByCode, isLoading: airportsLoading } = useAirports();
   const navigate = useNavigate();
@@ -99,11 +89,11 @@ export const FlightsSearch = () => {
           if (!dateStr) return '';
           // If already in ISO format, return as is
           if (dateStr.includes('T')) return dateStr;
-          
+
           // Handle different date formats
           // Support: YYYY/MM/DD, YYYY-MM-DD, or other formats
           let date: Date;
-          
+
           // Try parsing as YYYY/MM/DD or YYYY-MM-DD
           if (dateStr.includes('/') || dateStr.includes('-')) {
             const parts = dateStr.split(/[\/\-]/);
@@ -120,21 +110,21 @@ export const FlightsSearch = () => {
           } else {
             date = new Date(dateStr);
           }
-          
+
           // Convert to ISO string (this will be in UTC)
           // But we want to search for the date in local timezone
           // So we'll format as YYYY-MM-DDTHH:mm:ss
           const year = date.getFullYear();
           const month = String(date.getMonth() + 1).padStart(2, '0');
           const day = String(date.getDate()).padStart(2, '0');
-          
+
           // Return date at start of day in ISO format
           return `${year}-${month}-${day}T00:00:00.000Z`;
         };
-        
+
         const departureDate = formatDate(searchValues.slectedDates[0]);
         const returnDate = searchValues.slectedDates[1] ? formatDate(searchValues.slectedDates[1]) : undefined;
-        
+
         console.log('Search params:', {
           from: searchValues.from,
           to: searchValues.to,
@@ -296,16 +286,6 @@ export const FlightsSearch = () => {
     }
   };
 
-  // Debug logging
-  console.log('Render state:', {
-    isLoading,
-    error,
-    departingFlightsCount: departingFlights.length,
-    returningFlightsCount: returningFlights.length,
-    currentFlightsCount: currentFlights.length,
-    currentTable: currentTable(),
-  });
-
   return (
     <div className="page-container">
       <div className={styles["flight-search-page"]}>
@@ -321,64 +301,51 @@ export const FlightsSearch = () => {
           <h4 className={styles["flight-table-title"]}>
             Choose a <span>{currentTable()}</span> flight
           </h4>
-          
+
           {isLoading && (
-            <div style={{ padding: "2rem", textAlign: "center" }}>
-              <p>Searching for flights...</p>
+            <div className={styles["loading-state"]}>
+              <div className={styles["loading-spinner"]}></div>
+              <p>Searching for the best flights...</p>
             </div>
           )}
 
           {error && (
-            <div style={{ padding: "1rem", background: "#fee", color: "#c33", borderRadius: "4px", marginBottom: "1rem" }}>
+            <div className={styles["error-state"]}>
+              <span className={styles["error-icon"]}>⚠️</span>
               {error}
             </div>
           )}
 
           {!isLoading && !error && currentFlights.length === 0 && (
-            <div style={{ padding: "2rem", textAlign: "center" }}>
-              <p>No {currentTable()} flights found. Please try different search criteria.</p>
+            <div className={styles["empty-state"]}>
+              <span className={styles["empty-icon"]}>✈️</span>
+              <h3>No {currentTable()} flights found</h3>
+              <p>Try adjusting your search criteria or selecting different dates.</p>
               {currentTable() === "returning" && searchValues?.flightType === "multiple" && (
                 <>
-                  <p style={{ fontSize: "0.9rem", color: "#666", marginTop: "0.5rem" }}>
-                    No return flights available from {searchValues.to} to {searchValues.from} on {searchValues.slectedDates?.[1] || 'selected date'}.
-                    <br />
-                    You can continue with a one-way trip or search for different dates.
-                  </p>
+                  <p className={styles["hint"]}>No return flights available from {searchValues.to} to {searchValues.from}.</p>
                   {altReturnOptions.length > 0 && (
-                    <div style={{ marginTop: 12, padding: '1rem', background: '#f7f7f7', borderRadius: 6 }}>
-                      <strong>Alternative return dates</strong>
+                    <div className={styles["alt-dates"]}>
+                      <strong>Try these alternative dates:</strong>
                       {altReturnOptions.map((opt) => (
-                        <div key={opt.date} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 }}>
-                          <div>
-                            {formatDate(opt.date)} — {opt.flights.length} flight{opt.flights.length !== 1 ? 's' : ''}
-                          </div>
-                          <div>
-                            <Button
-                              variant="secondary"
-                              size="md"
-                              onClick={() => {
-                                setReturningFlights(opt.flights);
-                              }}
-                            >
-                              Show flights
-                            </Button>
-                          </div>
+                        <div key={opt.date} className={styles["alt-option"]}>
+                          <span>{formatDate(opt.date)} — {opt.flights.length} flight{opt.flights.length !== 1 ? 's' : ''}</span>
+                          <Button variant="secondary" size="md" onClick={() => setReturningFlights(opt.flights)}>
+                            Show flights
+                          </Button>
                         </div>
                       ))}
                     </div>
                   )}
                 </>
               )}
-              <p style={{ fontSize: "0.9rem", color: "#666", marginTop: "0.5rem" }}>
-                Debug: departingFlights={departingFlights.length}, returningFlights={returningFlights.length}
-              </p>
             </div>
           )}
 
           {!isLoading && !error && currentFlights.length > 0 && (
             <>
-              <div style={{ padding: "0.5rem", background: "#e8f5e9", color: "#2e7d32", borderRadius: "4px", marginBottom: "1rem", fontSize: "0.9rem" }}>
-                Found {currentFlights.length} flight{currentFlights.length !== 1 ? 's' : ''}
+              <div className={styles["results-count"]}>
+                <span className={styles["count"]}>{currentFlights.length}</span> flight{currentFlights.length !== 1 ? 's' : ''} found
               </div>
               <FlightTable
                 flights={sortData(currentFlights, dataFilter)}
@@ -393,13 +360,6 @@ export const FlightsSearch = () => {
           )}
         </div>
         <div className={styles["right-container"]}>
-          {!selectedFlightsId[0] && (
-            <>
-              <PriceGrid />
-              <PriceHistory />
-              <PriceRating />
-            </>
-          )}
           {selectedFlightsId[0] && (
             <SelectedFlights
               flights={[
@@ -428,34 +388,12 @@ export const FlightsSearch = () => {
                   size="lg"
                   onClick={() => handleSubmit()}
                 >
-                  Passenger information
+                  Continue to Passenger Info
                 </Button>
               )}
           </div>
         </div>
       </div>
-      <CardRow
-        title={
-          <RowTitle
-            info="Find your next adventure with these"
-            span="flight deals"
-            color="var(--purple-blue)"
-          />
-        }
-        cards={flightDeals1}
-        viewAllUrl="/flights"
-      />
-      <CardRow
-        title={
-          <RowTitle
-            info="Explore unique"
-            span="places to stay"
-            color="var(--turquoise)"
-          />
-        }
-        viewAllUrl="/hotels"
-        cards={hotelDeals1}
-      />
     </div>
   );
 };

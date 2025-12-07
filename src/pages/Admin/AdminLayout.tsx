@@ -1,7 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@context/AuthContext';
-import { Header } from '@shared/layout/Header/Header';
 import {
   Sidebar,
   Menu,
@@ -43,70 +42,69 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   return (
     <ProSidebarProvider>
       <div className={styles['admin-layout']}>
-        <Header variant="basic" />
         <div className={styles['admin-container']}>
           <Sidebar
             collapsed={collapsed}
             breakPoint="md"
             className={styles['pro-sidebar']}
           >
-          <div className={styles['sidebar-header']}>
-            {!collapsed && (
-              <>
-                <h2>Admin Panel</h2>
-                <p className={styles['admin-user']}>
-                  {user?.firstName} {user?.lastName}
-                </p>
-              </>
-            )}
-            <button
-              className={styles['collapse-btn']}
-              onClick={() => setCollapsed(!collapsed)}
-              aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-              title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            <div className={styles['sidebar-header']}>
+              {!collapsed && (
+                <>
+                  <h2>Admin Panel</h2>
+                  <p className={styles['admin-user']}>
+                    {user?.firstName} {user?.lastName}
+                  </p>
+                </>
+              )}
+              <button
+                className={styles['collapse-btn']}
+                onClick={() => setCollapsed(!collapsed)}
+                aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               >
-                {collapsed ? (
-                  <path d="M9 18L15 12L9 6" />
-                ) : (
-                  <path d="M15 18L9 12L15 6" />
-                )}
-              </svg>
-            </button>
-          </div>
-          <Menu>
-            {menuItems.map((item) => (
-              <MenuItem
-                key={item.path}
-                icon={item.icon}
-                active={location.pathname === item.path}
-                onClick={() => navigate(item.path)}
-              >
-                {item.label}
-              </MenuItem>
-            ))}
-            <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid #e0e0e0' }}>
-              <MenuItem
-                icon={<HomeIcon />}
-                onClick={() => navigate('/')}
-              >
-                Back to Site
-              </MenuItem>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  {collapsed ? (
+                    <path d="M9 18L15 12L9 6" />
+                  ) : (
+                    <path d="M15 18L9 12L15 6" />
+                  )}
+                </svg>
+              </button>
             </div>
-          </Menu>
-        </Sidebar>
-        <main className={styles['admin-content']}>{children}</main>
+            <Menu>
+              {menuItems.map((item) => (
+                <MenuItem
+                  key={item.path}
+                  icon={item.icon}
+                  active={location.pathname === item.path}
+                  onClick={() => navigate(item.path)}
+                >
+                  {item.label}
+                </MenuItem>
+              ))}
+              <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid #e0e0e0' }}>
+                <MenuItem
+                  icon={<HomeIcon />}
+                  onClick={() => navigate('/')}
+                >
+                  Back to Site
+                </MenuItem>
+              </div>
+            </Menu>
+          </Sidebar>
+          <main className={styles['admin-content']}>{children}</main>
+        </div>
       </div>
-    </div>
     </ProSidebarProvider>
   );
 };

@@ -9,7 +9,7 @@ export const TableCell: FC<FlightDataRow> = ({ flight, ...other }) => {
   return (
     <tr className={styles["table-cell"]} tabIndex={0} {...other}>
       <td className={styles["logo"]}>
-        <img src={flight.logo} alt="" />
+        <img src={"/flight-default.png"} className="" alt="" />
       </td>
       <td>
         <p className="duration">{flight.duration}</p>

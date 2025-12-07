@@ -124,13 +124,12 @@ const AdminReservations = () => {
                   <td>{reservation.totalPrice.toFixed(2)} MAD</td>
                   <td>
                     <span
-                      className={`${styles['status-badge']} ${
-                        reservation.status === 'CONFIRMED'
+                      className={`${styles['status-badge']} ${reservation.status === 'CONFIRMED'
                           ? styles['confirmed']
                           : reservation.status === 'CANCELLED'
-                          ? styles['cancelled']
-                          : styles['pending']
-                      }`}
+                            ? styles['cancelled']
+                            : styles['pending']
+                        }`}
                     >
                       {reservation.status}
                     </span>
