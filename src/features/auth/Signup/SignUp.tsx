@@ -10,6 +10,7 @@ import { useFormik } from "formik";
 
 interface SignUpProps extends HTMLAttributes<HTMLDivElement> {
   setOpen: (open: boolean) => void;
+  initialLoginMode?: boolean;
 }
 
 interface SignUpFormValues {
@@ -22,9 +23,9 @@ interface SignUpFormValues {
   dealAlerts: boolean;
 }
 
-export const SignUp: FC<SignUpProps> = ({ setOpen }) => {
+export const SignUp: FC<SignUpProps> = ({ setOpen, initialLoginMode = false }) => {
   const { login, register, error, clearError } = useAuth();
-  const [isLoginMode, setIsLoginMode] = useState(false);
+  const [isLoginMode, setIsLoginMode] = useState(initialLoginMode);
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -79,7 +80,7 @@ export const SignUp: FC<SignUpProps> = ({ setOpen }) => {
   return (
     <div className={styles["signup"]}>
       <div>
-        <h3>{isLoginMode ? "Sign in to Tripma" : "Sign up for Tripma"}</h3>
+        <h3>{isLoginMode ? "Sign in to AtlasAir" : "Sign up for AtlasAir"}</h3>
         <CloseIcon
           className={styles["close"]}
           onClick={() => {
@@ -93,7 +94,7 @@ export const SignUp: FC<SignUpProps> = ({ setOpen }) => {
       <p>
         {isLoginMode
           ? "Sign in to your account to continue booking flights."
-          : "Tripma is totally free to use. Sign up using your email address or phone number below to get started."}
+          : "AtlasAir is totally free to use. Sign up using your email address or phone number below to get started."}
       </p>
 
       <form onSubmit={formik.handleSubmit}>
@@ -157,9 +158,9 @@ export const SignUp: FC<SignUpProps> = ({ setOpen }) => {
         )}
 
         {(error || submitError) && (
-          <div style={{ 
-            color: "#dc3545", 
-            fontSize: "14px", 
+          <div style={{
+            color: "#dc3545",
+            fontSize: "14px",
             marginBottom: "0",
             padding: "12px 16px",
             background: "#f8d7da",
@@ -174,8 +175,8 @@ export const SignUp: FC<SignUpProps> = ({ setOpen }) => {
           {isLoading
             ? "Loading..."
             : isLoginMode
-            ? "Sign in"
-            : "Create account"}
+              ? "Sign in"
+              : "Create account"}
         </Button>
       </form>
 

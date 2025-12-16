@@ -13,7 +13,7 @@ export const PriceRating = () => {
           but could rise 18% to $885 in two weeks.
         </p>
         <p>
-          Tripma analyzes thousands of flights, prices, and trends to ensure you
+          AtlasAir analyzes thousands of flights, prices, and trends to ensure you
           get the best deal.
         </p>
       </div>

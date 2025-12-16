@@ -66,7 +66,7 @@ const AdminDashboard = () => {
     <AdminLayout>
       <div className={styles['dashboard']}>
         <h1>Admin Dashboard</h1>
-        
+
         <div className={styles['stats-grid']}>
           <div className={styles['stat-card']}>
             <div className={styles['stat-icon']}>
@@ -84,7 +84,7 @@ const AdminDashboard = () => {
             </div>
             <div className={styles['stat-content']}>
               <h3>Total Revenue</h3>
-              <p className={styles['stat-value']}>{statistics.totalRevenue.toFixed(2)} MAD</p>
+              <p className={styles['stat-value']}>{Number(statistics.totalRevenue).toFixed(2)} MAD</p>
             </div>
           </div>
 
@@ -158,7 +158,7 @@ const AdminDashboard = () => {
                   <div key={index} className={styles['revenue-item']}>
                     <span>{item.month}</span>
                     <span className={styles['revenue-amount']}>
-                      {item.revenue.toFixed(2)} MAD
+                      {Number(item.revenue).toFixed(2)} MAD
                     </span>
                   </div>
                 ))

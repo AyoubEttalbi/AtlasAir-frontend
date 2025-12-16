@@ -4,7 +4,7 @@ export const Reviews = () => {
   return (
     <div className={styles["reviews"]}>
       <h3 className={styles["title"]}>
-        What <span>Tripma</span> users are saying
+        What <span>AtlasAir</span> users are saying
       </h3>
       <div className={styles["container"]}>
         <ReviewCard
@@ -13,7 +13,7 @@ export const Reviews = () => {
           address="Seoul, South Korea"
           date="June 2023"
           stars={4}
-          review="What a great experience using Tripma! I booked all of my flights for my gap year through Tripma and never had any issues. When I had to cancel a flight because of an emergency, Tripma support helped me read more..."
+          review="What a great experience using AtlasAir! I booked all of my flights for my gap year through AtlasAir and never had any issues. When I had to cancel a flight because of an emergency, AtlasAir support helped me read more..."
           url={"/reviews/yifei-chen"}
         />
         <ReviewCard
@@ -22,7 +22,7 @@ export const Reviews = () => {
           address="Honolulu, Hawaii"
           date="Jan 2024"
           stars={4.5}
-          review="My family and I visit Hawaii every year, and we usually book our flights using other services. Tripma was recommened to us by a long time friend, and I’m so glad we tried it out! The process was easy and simple"
+          review="My family and I visit Hawaii every year, and we usually book our flights using other services. AtlasAir was recommened to us by a long time friend, and I’m so glad we tried it out! The process was easy and simple"
           url={"/reviews/kaori-yamaguchi"}
         />
         <ReviewCard
@@ -31,7 +31,7 @@ export const Reviews = () => {
           address="Berlin, Germany"
           date="April 2023"
           stars={5}
-          review="When I was looking to book my flight to Berlin from LAX, Tripma had the best browsing experiece so I figured I’d give it a try. It was my first time using Tripma, but I’d definitely recommend it to a friend and use it for my next trip!"
+          review="When I was looking to book my flight to Berlin from LAX, AtlasAir had the best browsing experiece so I figured I’d give it a try. It was my first time using AtlasAir, but I’d definitely recommend it to a friend and use it for my next trip!"
           url={"/reviews/anthony-lewis"}
         />
       </div>

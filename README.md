@@ -1,4 +1,4 @@
-# Tripma
+# AtlasAir
 
 Flight booking website built on React, TypeScript, and SCSS
 
@@ -16,7 +16,7 @@ Flight booking website built on React, TypeScript, and SCSS
 
 ## Introduction
 
-Tripma is a modern flight booking website designed to provide a seamless experience for users to search and book flights. The application is built using React, TypeScript, and SCSS, ensuring a robust and maintainable codebase.
+AtlasAir is a modern flight booking website designed to provide a seamless experience for users to search and book flights. The application is built using React, TypeScript, and SCSS, ensuring a robust and maintainable codebase.
 
 ## Features
 
@@ -40,11 +40,11 @@ To run this project locally, follow these steps:
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/rovendix/tripma.git
+    git clone https://github.com/rovendix/AtlasAir.git
     ```
 2. Navigate to the project directory:
     ```sh
-    cd tripma
+    cd AtlasAir
     ```
 3. Install the dependencies:
     ```sh
@@ -65,7 +65,7 @@ This will launch the app and you can view it in your browser at `http://localhos
 Here is an overview of the project's structure:
 
 ```
-tripma/
+AtlasAir/
 ├── public/                  # Public assets
 ├── src/                     # Source files
 │   ├── assets/              # Static assets like images, fonts, etc.

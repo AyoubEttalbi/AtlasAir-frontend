@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import styles from "./Footer.module.scss";
-import Logo from "@shared/logos/tripma/tripma-lp.svg?react";
+import Logo from "@shared/logos/tripma/AtlasAir.png";
 import TwitterIcon from "@shared/icons/24/twitter.svg?react";
 import InstgramIcon from "@shared/icons/24/instagram.svg?react";
 import FacebookIcon from "@shared/icons/24/facebook.svg?react";
 
 const aboutList = [
-  { title: "About Tripma", link: "/" },
+  { title: "About AtlasAir", link: "/" },
   { title: "How it works", link: "/" },
   { title: "Careers", link: "/" },
   { title: "Press", link: "/" },
@@ -31,8 +31,8 @@ const supportList = [
   { title: "Accessibility", link: "/" },
 ];
 const appList = [
-  { title: "Tripma for Android", link: "/" },
-  { title: "Tripma for iOS", link: "/" },
+  { title: "AtlasAir for Android", link: "/" },
+  { title: "AtlasAir for iOS", link: "/" },
   { title: "Mobile site", link: "/" },
 ];
 export const Footer = () => {
@@ -42,7 +42,7 @@ export const Footer = () => {
         {" "}
         <div className={styles["logo"]}>
           <Link to="/">
-            <Logo />
+            <img src={Logo} alt="AtlasAir" style={{ height: "48px" }} />
           </Link>
         </div>
         <div className={styles["about"]}>
@@ -113,7 +113,7 @@ export const Footer = () => {
           </a>
         </div>
         <p className={styles["copyright"]}>
-          © {new Date().getFullYear()} Tripma incorporated
+          © {new Date().getFullYear()} AtlasAir incorporated
         </p>
       </div>
     </footer>

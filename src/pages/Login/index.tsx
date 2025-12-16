@@ -91,12 +91,12 @@ export const Login: FC = () => {
         </Link>
         <div className={styles["login-card"]}>
           <div>
-            <h3>{isLoginMode ? "Sign in to Tripma" : "Sign up for Tripma"}</h3>
+            <h3>{isLoginMode ? "Sign in to AtlasAir" : "Sign up for AtlasAir"}</h3>
           </div>
           <p>
             {isLoginMode
               ? "Sign in to your account to continue booking flights."
-              : "Tripma is totally free to use. Sign up using your email address or phone number below to get started."}
+              : "AtlasAir is totally free to use. Sign up using your email address or phone number below to get started."}
           </p>
 
           <form onSubmit={formik.handleSubmit}>
@@ -169,8 +169,8 @@ export const Login: FC = () => {
               {isLoading
                 ? "Loading..."
                 : isLoginMode
-                ? "Sign in"
-                : "Create account"}
+                  ? "Sign in"
+                  : "Create account"}
             </Button>
           </form>
 

@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import Logo from "../../logos/tripma/tripma-lp.svg?react";
+import Logo from "../../logos/tripma/AtlasAir.png";
 import MenuIcon from "@shared/icons/32/menu.svg?react";
 import { Link } from "react-router-dom";
 import styles from "./Header.module.scss";
@@ -16,12 +16,19 @@ interface HeaderProps {
 export const Header: FC<HeaderProps> = ({ className, variant }) => {
   const { isAuthenticated, user, logout } = useAuth();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [isLoginMode, setIsLoginMode] = useState(false);
+
+  const openAuthDialog = (loginMode: boolean) => {
+    setIsLoginMode(loginMode);
+    setShowAuthDialog(true);
+  };
+
   return (
     <header className={clsx(styles.header, className, styles[variant || ""])}>
       <div>
         <MenuIcon className={styles["menu-icon"]} />
         <Link to="/" className={styles.logo}>
-          <Logo />
+          <img src={Logo} alt="AtlasAir" style={{ height: "48px" }} />
         </Link>
       </div>
       <ul className={styles.nav}>
@@ -37,11 +44,11 @@ export const Header: FC<HeaderProps> = ({ className, variant }) => {
         {!isAuthenticated && (
           <>
             <li>
-              <Link to="" onClick={() => setShowAuthDialog(true)}>
+              <Link to="" onClick={() => openAuthDialog(true)}>
                 Sign in
               </Link>
             </li>
-            <Button size="sm" onClick={() => setShowAuthDialog(true)}>
+            <Button size="sm" onClick={() => openAuthDialog(false)}>
               Sign up
             </Button>
           </>
@@ -63,7 +70,7 @@ export const Header: FC<HeaderProps> = ({ className, variant }) => {
         )}
       </ul>
       <Modal opened={showAuthDialog} setOpened={setShowAuthDialog}>
-        <SignUp setOpen={setShowAuthDialog} />
+        <SignUp setOpen={setShowAuthDialog} initialLoginMode={isLoginMode} />
       </Modal>
     </header>
   );

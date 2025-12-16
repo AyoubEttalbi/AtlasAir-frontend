@@ -234,112 +234,323 @@ const FlightsPaymentPage = () => {
     );
   }
 
-  if (success) {
-    return (
-      <div>
-        <Header variant="basic" />
-        <div className="page-container" style={{ padding: "2rem", textAlign: "center" }}>
+ if (success) {
+  return (
+    <div>
+      <Header variant="basic" />
+      <div className="page-container" style={{ 
+        padding: "2rem",
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+      }}>
+        <div style={{
+          background: "white",
+          borderRadius: "16px",
+          maxWidth: "700px",
+          margin: "3rem auto",
+          padding: "3rem",
+          boxShadow: "0 20px 60px rgba(0, 0, 0, 0.15)",
+          animation: "slideUp 0.5s ease-out"
+        }}>
+          {/* Success Icon */}
           <div style={{
-            background: "#dfd",
-            color: "#3a3",
-            padding: "2rem",
-            borderRadius: "8px",
-            maxWidth: "800px",
-            margin: "2rem auto",
-            textAlign: 'left'
+            width: "80px",
+            height: "80px",
+            background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "0 auto 1.5rem",
+            animation: "scaleIn 0.6s ease-out"
           }}>
-            <h2>Payment Successful! ✅</h2>
-            <p>Your booking has been confirmed. You will receive a confirmation email shortly.</p>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
 
-            {tickets.length > 0 ? (
-              <div style={{ marginTop: 12 }}>
-                <h3>Tickets</h3>
-                <ul style={{ listStyle: 'none', padding: 0 }}>
-                  {tickets.map((ticket) => {
-                    // build file URL if needed
-                    const filePath = ticket.fichierPDF || ticket.reservation?.ticketPdfPath;
-                    const fileUrl = filePath
-                      ? filePath.startsWith('http')
-                        ? filePath
-                        : `${(api && api.defaults && api.defaults.baseURL) ? api.defaults.baseURL.replace(/\/$/, '') : ''}/${filePath.replace(/^\/+/, '')}`
-                      : null;
+          {/* Title */}
+          <h2 style={{
+            fontSize: "2rem",
+            fontWeight: "700",
+            color: "#1f2937",
+            textAlign: "center",
+            marginBottom: "0.5rem"
+          }}>
+            Payment Successful!
+          </h2>
+          
+          <p style={{
+            fontSize: "1rem",
+            color: "#6b7280",
+            textAlign: "center",
+            marginBottom: "2.5rem"
+          }}>
+            Your booking has been confirmed. You will receive a confirmation email shortly.
+          </p>
 
-                    return (
-                      <li key={ticket.id} style={{ marginBottom: 8 }}>
-                        <strong>{ticket.numeroBillet}</strong>
-                        {fileUrl ? (
-                          <a style={{ marginLeft: 12 }} href={fileUrl} target="_blank" rel="noreferrer">Download PDF</a>
-                        ) : (
-                          <>
-                            <button
-                              style={{ marginLeft: 12, background: 'transparent', border: 'none', color: '#1976d2', cursor: 'pointer' }}
-                              onClick={() => {
+          {/* Divider */}
+          <div style={{
+            height: "1px",
+            background: "linear-gradient(90deg, transparent, #e5e7eb, transparent)",
+            margin: "2rem 0"
+          }}></div>
+
+          {/* Tickets Section */}
+          {tickets.length > 0 ? (
+            <div>
+              <h3 style={{
+                fontSize: "1.125rem",
+                fontWeight: "600",
+                color: "#374151",
+                marginBottom: "1rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem"
+              }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 7v4a1 1 0 0 0 1 1h3"></path>
+                  <path d="M7 7v10"></path>
+                  <path d="M10 8v8a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1z"></path>
+                  <path d="M17 7v4a1 1 0 0 1-1 1h-3"></path>
+                </svg>
+                Your Tickets
+              </h3>
+              
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                {tickets.map((ticket) => {
+                  const filePath = ticket.fichierPDF || ticket.reservation?.ticketPdfPath;
+                  const fileUrl = filePath
+                    ? filePath.startsWith('http')
+                      ? filePath
+                      : `${(api && api.defaults && api.defaults.baseURL) ? api.defaults.baseURL.replace(/\/$/, '') : ''}/${filePath.replace(/^\/+/, '')}`
+                    : null;
+
+                  return (
+                    <div key={ticket.id} style={{
+                      background: "#f9fafb",
+                      border: "1px solid #e5e7eb",
+                      borderRadius: "12px",
+                      padding: "1.25rem",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      transition: "all 0.2s ease",
+                      cursor: "default"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "#f3f4f6";
+                      e.currentTarget.style.borderColor = "#d1d5db";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "#f9fafb";
+                      e.currentTarget.style.borderColor = "#e5e7eb";
+                    }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{
+                          fontSize: "0.875rem",
+                          fontWeight: "600",
+                          color: "#374151",
+                          marginBottom: "0.25rem"
+                        }}>
+                          {ticket.numeroBillet}
+                        </div>
+                        <div style={{
+                          fontSize: "0.75rem",
+                          color: "#9ca3af"
+                        }}>
+                          Ticket Number
+                        </div>
+                      </div>
+
+                      {fileUrl ? (
+                        <a 
+                          href={fileUrl} 
+                          target="_blank" 
+                          rel="noreferrer"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.5rem",
+                            padding: "0.625rem 1.25rem",
+                            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                            color: "white",
+                            textDecoration: "none",
+                            borderRadius: "8px",
+                            fontSize: "0.875rem",
+                            fontWeight: "500",
+                            transition: "all 0.2s ease",
+                            boxShadow: "0 2px 8px rgba(102, 126, 234, 0.3)"
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "translateY(-2px)";
+                            e.currentTarget.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.4)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "translateY(0)";
+                            e.currentTarget.style.boxShadow = "0 2px 8px rgba(102, 126, 234, 0.3)";
+                          }}
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                          </svg>
+                          Download PDF
+                        </a>
+                      ) : (
+                        <button
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.5rem",
+                            padding: "0.625rem 1.25rem",
+                            background: "white",
+                            color: "#667eea",
+                            border: "2px solid #667eea",
+                            borderRadius: "8px",
+                            fontSize: "0.875rem",
+                            fontWeight: "500",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease"
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = "#667eea";
+                            e.currentTarget.style.color = "white";
+                            e.currentTarget.style.transform = "translateY(-2px)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = "white";
+                            e.currentTarget.style.color = "#667eea";
+                            e.currentTarget.style.transform = "translateY(0)";
+                          }}
+                          onClick={() => {
+                            try {
+                              const pdfData = {
+                                numeroBillet: ticket.numeroBillet,
+                                dateEmission: ticket.dateEmission,
+                                bookingReference: ticket.reservation?.bookingReference,
+                                passengerFirstName: ticket.reservation?.passengerFirstName,
+                                passengerLastName: ticket.reservation?.passengerLastName,
+                                passengerPassport: ticket.reservation?.passengerPassport,
+                                passengerDateOfBirth: ticket.reservation?.passengerDateOfBirth,
+                                flightNumber: ticket.reservation?.flight?.flightNumber,
+                                airlineName: ticket.reservation?.flight?.airline?.name,
+                                departureAirportCode: ticket.reservation?.flight?.departureAirport?.code,
+                                departureAirportName: ticket.reservation?.flight?.departureAirport?.name,
+                                departureCity: ticket.reservation?.flight?.departureAirport?.city,
+                                departureTime: ticket.reservation?.flight?.departureTime,
+                                arrivalAirportCode: ticket.reservation?.flight?.arrivalAirport?.code,
+                                arrivalAirportName: ticket.reservation?.flight?.arrivalAirport?.name,
+                                arrivalCity: ticket.reservation?.flight?.arrivalAirport?.city,
+                                arrivalTime: ticket.reservation?.flight?.arrivalTime,
+                                flightClass: ticket.reservation?.flightClass,
+                                totalPrice: ticket.reservation?.totalPrice,
+                              };
+                              (async () => {
                                 try {
-                                  const pdfData = {
-                                    numeroBillet: ticket.numeroBillet,
-                                    dateEmission: ticket.dateEmission,
-                                    bookingReference: ticket.reservation?.bookingReference,
-                                    passengerFirstName: ticket.reservation?.passengerFirstName,
-                                    passengerLastName: ticket.reservation?.passengerLastName,
-                                    passengerPassport: ticket.reservation?.passengerPassport,
-                                    passengerDateOfBirth: ticket.reservation?.passengerDateOfBirth,
-                                    flightNumber: ticket.reservation?.flight?.flightNumber,
-                                    airlineName: ticket.reservation?.flight?.airline?.name,
-                                    departureAirportCode: ticket.reservation?.flight?.departureAirport?.code,
-                                    departureAirportName: ticket.reservation?.flight?.departureAirport?.name,
-                                    departureCity: ticket.reservation?.flight?.departureAirport?.city,
-                                    departureTime: ticket.reservation?.flight?.departureTime,
-                                    arrivalAirportCode: ticket.reservation?.flight?.arrivalAirport?.code,
-                                    arrivalAirportName: ticket.reservation?.flight?.arrivalAirport?.name,
-                                    arrivalCity: ticket.reservation?.flight?.arrivalAirport?.city,
-                                    arrivalTime: ticket.reservation?.flight?.arrivalTime,
-                                    flightClass: ticket.reservation?.flightClass,
-                                    totalPrice: ticket.reservation?.totalPrice,
-                                  };
-                                  (async () => {
-                                    try {
-                                      const blob = await generateTicketPdf(pdfData as any, `ticket-${ticket.numeroBillet || ticket.reservation?.bookingReference}.pdf`, { autoDownload: false });
-                                      if (blob instanceof Blob) {
-                                        const url = URL.createObjectURL(blob);
-                                        window.open(url, '_blank');
-                                        // revoke after a short delay
-                                        setTimeout(() => URL.revokeObjectURL(url), 60000);
-                                      }
-                                    } catch (e) {
-                                      console.error('PDF generation failed', e);
-                                    }
-                                  })();
+                                  const blob = await generateTicketPdf(pdfData as any, `ticket-${ticket.numeroBillet || ticket.reservation?.bookingReference}.pdf`, { autoDownload: false });
+                                  if (blob instanceof Blob) {
+                                    const url = URL.createObjectURL(blob);
+                                    window.open(url, '_blank');
+                                    setTimeout(() => URL.revokeObjectURL(url), 60000);
+                                  }
                                 } catch (e) {
                                   console.error('PDF generation failed', e);
                                 }
-                              }}
-                            >
-                              Generate PDF
-                            </button>
-                          </>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
+                              })();
+                            } catch (e) {
+                              console.error('PDF generation failed', e);
+                            }
+                          }}
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                          </svg>
+                          Generate PDF
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-            ) : (
-              <p style={{ marginTop: 12 }}>Your ticket will be available shortly via email.</p>
-            )}
-
-            <div style={{ marginTop: "2rem" }}>
-              <Button
-                variant="primary"
-                onClick={() => navigate("/flights")}
-              >
-                Return to Home
-              </Button>
             </div>
+          ) : (
+            <div style={{
+              background: "#eff6ff",
+              border: "1px solid #dbeafe",
+              borderRadius: "12px",
+              padding: "1.5rem",
+              textAlign: "center"
+            }}>
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" style={{ margin: "0 auto 1rem" }}>
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              <p style={{
+                fontSize: "0.875rem",
+                color: "#1e40af",
+                margin: 0
+              }}>
+                Your ticket will be available shortly via email.
+              </p>
+            </div>
+          )}
+
+          {/* Return Button */}
+          <div style={{ marginTop: "2.5rem" }}>
+            <Button
+              variant="primary"
+              onClick={() => navigate("/flights")}
+              style={{
+                width: "100%",
+                padding: "0.875rem",
+                fontSize: "1rem",
+                fontWeight: "600",
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                border: "none",
+                borderRadius: "10px",
+                color: "white",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)"
+              }}
+            >
+              Return to Home
+            </Button>
           </div>
         </div>
+
+        {/* Add animations */}
+        <style>{`
+          @keyframes slideUp {
+            from {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          
+          @keyframes scaleIn {
+            from {
+              transform: scale(0);
+              opacity: 0;
+            }
+            to {
+              transform: scale(1);
+              opacity: 1;
+            }
+          }
+        `}</style>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div>

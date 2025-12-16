@@ -154,7 +154,7 @@ export const FlightsSearch = () => {
         console.log('First flight details:', departing[0]);
         setDepartingFlights(departing);
 
-        // Fetch returning flights if round trip
+        // Fetch returning flights if 
         setAltReturnOptions([]);
         if (searchValues.flightType === "multiple" && returnDate) {
           const returningSearchRequest: SearchFlightRequest = {
